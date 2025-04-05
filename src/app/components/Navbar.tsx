@@ -1,8 +1,17 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { SignInButton, SignOutButton } from './AuthButtons';
+import { log } from 'console';
 
 export default function Navbar() {
+
+  const { data: session } = useSession();
+
+  console.log(session, 'session');
+  console.log(session?.user, 'session?.user');
+
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,6 +34,12 @@ export default function Navbar() {
               <span className="mr-2">+</span>
               Become Artist
             </Link>
+
+            {session ? (
+              <SignOutButton />
+            ) : (
+              <SignInButton />
+            )}
           </div>
         </div>
       </div>
