@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 interface ImageGeneratorSliderProps {
@@ -21,19 +21,61 @@ export default function ImageGeneratorSlider({
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [outputFormat, setOutputFormat] = useState<'webp' | 'png' | 'jpg'>('webp');
+  const [model, setModel] = useState<'dev' | 'schnell'>('dev');
+  const [goFast, setGoFast] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const generateImage = async () => {
     if (!prompt.trim()) return;
     
     setIsLoading(true);
+    setError(null);
+    
     try {
-      // Simulate API call to generate image
-      // In a real implementation, this would call your backend API
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Create the full prompt with username
+      const fullPrompt = `${prompt} richard`;
       
-      // For now, we'll use a placeholder image
-      const seed = encodeURIComponent(`${artistUsername}-${prompt}`);
-      const imageUrl = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${seed}`;
+      // Prepare the request body
+      const requestBody = {
+        version: "9b005fd3225f1483fead8e7d252d4058a3b1c961528cc95598b922fefc04f765",
+        input: {
+          prompt: fullPrompt,
+          model: model,
+          go_fast: goFast,
+          lora_scale: 1,
+          megapixels: "1",
+          num_outputs: 1,
+          aspect_ratio: "1:1",
+          output_format: outputFormat,
+          guidance_scale: 3,
+          output_quality: 80,
+          prompt_strength: 0.8,
+          extra_lora_scale: 1,
+          num_inference_steps: 28
+        }
+      };
+      
+      // Make the API request to our Next.js API route
+      const response = await fetch('/api/generate-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
+        
+        throw new Error(errorData.error || `API request failed with status ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // Get the output URL from the response
+      const imageUrl = data.output[0];
       
       // Copy to clipboard automatically
       await navigator.clipboard.writeText(imageUrl);
@@ -42,10 +84,17 @@ export default function ImageGeneratorSlider({
       // Call the callback to update the parent component
       onImageGenerated(imageUrl);
       
-      onClose();
-      setPrompt('');
+      // Close the slider after a short delay
+      setTimeout(() => {
+        onClose();
+        // Reset state for next time
+        setPrompt('');
+      }, 1500);
     } catch (error) {
       console.error('Error generating image:', error);
+      console.log(error);
+      
+      setError(error instanceof Error ? error.message : 'Failed to generate image');
     } finally {
       setIsLoading(false);
     }
@@ -101,6 +150,50 @@ export default function ImageGeneratorSlider({
             />
           </div>
 
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Model
+              </label>
+              <select
+                value={model}
+                onChange={(e) => setModel(e.target.value as 'dev' | 'schnell')}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+              >
+                <option value="dev">Dev (Better Quality)</option>
+                <option value="schnell">Schnell (Faster)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Output Format
+              </label>
+              <select
+                value={outputFormat}
+                onChange={(e) => setOutputFormat(e.target.value as 'webp' | 'png' | 'jpg')}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+              >
+                <option value="webp">WebP</option>
+                <option value="png">PNG</option>
+                <option value="jpg">JPG</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="goFast"
+              checked={goFast}
+              onChange={(e) => setGoFast(e.target.checked)}
+              className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+            />
+            <label htmlFor="goFast" className="ml-2 block text-sm text-gray-700">
+              Go Fast (Faster generation, lower quality)
+            </label>
+          </div>
+
           <button
             onClick={generateImage}
             disabled={isLoading || !prompt.trim()}
@@ -108,6 +201,18 @@ export default function ImageGeneratorSlider({
           >
             {isLoading ? 'Generating...' : 'Generate Image'}
           </button>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+              {error}
+            </div>
+          )}
+
+          {isCopied && (
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md">
+              Image URL copied to clipboard!
+            </div>
+          )}
         </div>
       </div>
     </div>
