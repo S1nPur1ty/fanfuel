@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface ProfileHeaderProps {
   name: string;
+  username: string;
   role: string;
   avatarUrl: string;
   stats: {
@@ -14,7 +16,7 @@ interface ProfileHeaderProps {
   bio: string;
 }
 
-export default function ProfileHeader({ name, role, avatarUrl, stats, bio }: ProfileHeaderProps) {
+export default function ProfileHeader({ name, username, role, avatarUrl, stats, bio }: ProfileHeaderProps) {
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
@@ -54,13 +56,16 @@ export default function ProfileHeader({ name, role, avatarUrl, stats, bio }: Pro
             </div>
           </div>
 
-          <div className="mt-6">
-            <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition">
+          <div className="mt-6 flex justify-center md:justify-start">
+            <Link
+              href={`/create?artist=${username}`}
+              className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition"
+            >
               Contribute
-            </button>
+            </Link>
           </div>
 
-          <p className="mt-6 text-gray-700">{bio}</p>
+          <p className="mt-6 text-gray-700 text-center md:text-left">{bio}</p>
         </div>
       </div>
     </div>

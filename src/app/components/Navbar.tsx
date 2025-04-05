@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function Navbar() {
   return (
@@ -15,17 +14,8 @@ export default function Navbar() {
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-900 hover:text-gray-600">
-              Home
-            </Link>
             <Link href="/explore" className="text-gray-900 hover:text-gray-600">
               Explore
-            </Link>
-            <Link 
-              href="/create" 
-              className="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800"
-            >
-              Create
             </Link>
           </div>
         </div>
