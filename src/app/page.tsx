@@ -27,10 +27,6 @@ export default function ExplorePage() {
     );
   };
 
-  const getCategoryData = (categoryName: string): CategoryData | undefined => {
-    return allCategories.find(cat => cat.name === categoryName);
-  };
-
   const toggleCategory = (categoryName: string) => {
     const newCategories = new Set(selectedCategories);
     

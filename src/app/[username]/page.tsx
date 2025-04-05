@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import ProfileHeader from '../components/ProfileHeader';
 import TabNavigation from '../components/TabNavigation';
