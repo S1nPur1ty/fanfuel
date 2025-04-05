@@ -17,6 +17,14 @@ export default function Navbar() {
             <Link href="/explore" className="text-gray-900 hover:text-gray-600">
               Explore
             </Link>
+
+            <Link
+              href="/create-profile"
+              className="inline-flex items-center px-6 py-3 rounded-lg text-sm font-medium bg-black text-white hover:bg-gray-800 transition"
+            >
+              <span className="mr-2">+</span>
+              Become Artist
+            </Link>
           </div>
         </div>
       </div>
