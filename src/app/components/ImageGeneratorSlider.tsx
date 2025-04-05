@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 
 interface ImageGeneratorSliderProps {
   artistName: string;
@@ -34,12 +33,13 @@ export default function ImageGeneratorSlider({
     
     try {
       // Create the full prompt with username
-      const fullPrompt = `${prompt} richard`;
+      const fullPrompt = `${prompt} anna`;
       
       // Prepare the request body
       const requestBody = {
-        version: "9b005fd3225f1483fead8e7d252d4058a3b1c961528cc95598b922fefc04f765",
+        version: "1a31c0e42af7739e1117d3dfa525c71eb628df329a4ec9cdc9becd00807f6d3e",
         input: {
+          userId: artistUsername,
           prompt: fullPrompt,
           model: model,
           go_fast: goFast,
