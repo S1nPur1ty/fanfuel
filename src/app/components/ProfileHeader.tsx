@@ -72,7 +72,7 @@ export default function ProfileHeader({ name, username, role, avatarUrl, stats, 
           <div className="mt-6 flex justify-center md:justify-start">
             <button
               onClick={() => setIsSliderOpen(true)}
-              className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition"
+              className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition cursor-pointer"
             >
               Contribute
             </button>

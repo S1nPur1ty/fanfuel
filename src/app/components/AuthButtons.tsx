@@ -10,7 +10,7 @@ export function SignInButton() {
         callbackUrl: window.location.href,
         redirect: true
       })}
-      className="text-gray-900 hover:text-gray-600"
+      className="text-gray-900 hover:text-gray-600 cursor-pointer"
     >
       Sign in
     </button>
@@ -21,7 +21,7 @@ export function SignOutButton() {
   return (
     <button
       onClick={() => signOut({ callbackUrl: window.location.href })}
-      className="text-gray-900 hover:text-gray-600"
+      className="text-gray-900 hover:text-gray-600 cursor-pointer"
     >
       Sign out
     </button>

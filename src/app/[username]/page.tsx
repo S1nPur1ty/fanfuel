@@ -5,8 +5,8 @@ import { useParams } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import ProfileHeader from '../components/ProfileHeader';
 import TabNavigation from '../components/TabNavigation';
-import ImageGrid from '../components/ImageGrid';
 import { mockArtists } from '../mocks/mockArtists';
+import UserImages from '../components/UserImages';
 
 export default function UserProfile() {
   const [activeTab, setActiveTab] = useState<'images' | 'collections' | 'about'>('images');
@@ -48,7 +48,7 @@ export default function UserProfile() {
       />
 
       {activeTab === 'images' && userData.images && (
-        <ImageGrid images={userData.images} />
+        <UserImages userId={userData.username} />
       )}
 
       {activeTab === 'collections' && (

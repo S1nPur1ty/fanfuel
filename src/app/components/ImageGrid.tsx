@@ -1,36 +1,33 @@
 'use client';
 
 import Image from 'next/image';
-
-interface ImageItem {
-  id: string;
-  src: string;
-  alt: string;
-}
-
+import { UserImage } from './UserImages';
 interface ImageGridProps {
-  images: ImageItem[];
+  images: UserImage[];
 }
 
 export default function ImageGrid({ images }: ImageGridProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images.map((image, index) => (
-          <div 
-            key={image.id} 
-            className="relative aspect-square rounded-lg overflow-hidden hover:opacity-90 transition cursor-pointer"
-          >
+      {images.map((image) => (
+        <div key={image.id} className="relative rounded-lg overflow-hidden hover:opacity-90 transition cursor-pointer shadow-sm">
+          <div className="relative h-48 w-full">
             <Image
-              src={image.src}
-              alt={image.alt}
+              src={image.ipfs_url || image.original_url}
+              alt={image.prompt}
               fill
-              priority={index === 0}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
             />
           </div>
-        ))}
+          <div className="p-4">
+            <p className="text-sm text-gray-600 truncate">{image.prompt}</p>
+            <p className="text-xs text-gray-400 mt-1">
+              {new Date(image.created_at).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      ))}
       </div>
     </div>
   );
