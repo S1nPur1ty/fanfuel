@@ -26,6 +26,7 @@ export default function ImageGrid({ images }: ImageGridProps) {
                 src={image.ipfs_url || image.original_url}
                 alt={image.prompt}
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover"
               />
             </div>
