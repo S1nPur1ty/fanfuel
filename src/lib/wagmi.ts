@@ -1,0 +1,19 @@
+import { http, createConfig } from 'wagmi';
+import { mainnet, sepolia } from 'wagmi/chains';
+import { injected, metaMask } from 'wagmi/connectors';
+
+// Configure chains & providers
+export const config = createConfig({
+  chains: [mainnet, sepolia],
+  connectors: [
+    injected(),
+    metaMask(),
+  ],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+  },
+});
+
+// Export types
+export type Config = typeof config; 
