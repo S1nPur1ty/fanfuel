@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.7",
     "@pinata/sdk": "^2.1.0",
     "@supabase/supabase-js": "^2.49.4",
     "next": "15.2.4",
