@@ -44,6 +44,7 @@ export default function ArtistCard({
               src={avatarUrl}
               alt={name}
               fill
+              sizes="(max-width: 640px) 64px, 64px"
               className="object-cover"
             />
           </div>

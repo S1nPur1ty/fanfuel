@@ -16,7 +16,7 @@ export default function ImageGrid({ images }: ImageGridProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images.map((image) => (
+        {images.map((image, index) => (
           <div 
             key={image.id} 
             className="relative aspect-square rounded-lg overflow-hidden hover:opacity-90 transition cursor-pointer"
@@ -25,6 +25,8 @@ export default function ImageGrid({ images }: ImageGridProps) {
               src={image.src}
               alt={image.alt}
               fill
+              priority={index === 0}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
             />
           </div>

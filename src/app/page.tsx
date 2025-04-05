@@ -4,88 +4,7 @@ import { useState } from 'react';
 import Navbar from './components/Navbar';
 import ArtistCard from './components/ArtistCard';
 import { CategoryData, trendingCategories } from './mocks/trendingCategories';
-
-// Mock data - in a real app, this would come from an API
-const mockArtists = [
-  {
-    name: 'Eleanor Pena',
-    username: 'eleanor',
-    role: 'Digital Artist',
-    categories: ['Digital Art', 'Illustration'],
-    avatarUrl: '/images/avatar.jpg',
-    bio: 'Creating digital art and illustrations. Let\'s make something amazing together!',
-    stats: {
-      contributors: 58200,
-      followers: 1200000,
-      tokens: 130000,
-    },
-  },
-  {
-    name: 'Jenny Wilson',
-    username: 'jenny',
-    role: 'Illustrator',
-    categories: ['Illustration', 'Traditional Art'],
-    avatarUrl: '/images/avatar2.jpg',
-    bio: 'Bringing imagination to life through vibrant illustrations and creative designs.',
-    stats: {
-      contributors: 42300,
-      followers: 890000,
-      tokens: 95000,
-    },
-  },
-  {
-    name: 'Robert Fox',
-    username: 'robert',
-    role: '3D Artist',
-    categories: ['3D Art', 'Animation'],
-    avatarUrl: '/images/avatar3.jpg',
-    bio: 'Specializing in 3D character design and animation. Let\'s create something unique!',
-    stats: {
-      contributors: 31500,
-      followers: 650000,
-      tokens: 78000,
-    },
-  },
-  {
-    name: 'Kristin Watson',
-    username: 'kristin',
-    role: 'Concept Artist',
-    categories: ['Concept Art', 'Digital Art'],
-    avatarUrl: '/images/avatar4.jpg',
-    bio: 'Transforming ideas into stunning visual concepts. Join me on this creative journey!',
-    stats: {
-      contributors: 27800,
-      followers: 520000,
-      tokens: 63000,
-    },
-  },
-  {
-    name: 'Cameron Williamson',
-    username: 'cameron',
-    role: 'Digital Painter',
-    categories: ['Digital Art', 'Traditional Art'],
-    avatarUrl: '/images/avatar5.jpg',
-    bio: 'Digital painting enthusiast creating dreamlike landscapes and characters.',
-    stats: {
-      contributors: 24600,
-      followers: 480000,
-      tokens: 55000,
-    },
-  },
-  {
-    name: 'Leslie Alexander',
-    username: 'leslie',
-    role: 'Character Artist',
-    categories: ['Character Design', 'Concept Art'],
-    avatarUrl: '/images/avatar6.jpg',
-    bio: 'Passionate about character design and storytelling through art.',
-    stats: {
-      contributors: 21900,
-      followers: 430000,
-      tokens: 48000,
-    },
-  },
-];
+import { mockArtists } from './mocks/mockArtists';
 
 export default function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -256,7 +175,7 @@ export default function ExplorePage() {
                     </span>
                   )}
                   {category.name !== 'All' && (
-                    <button
+                    <div
                       onClick={(e) => {
                         e.stopPropagation();
                         handleRemoveCategory(category.name);
@@ -272,7 +191,7 @@ export default function ExplorePage() {
                       title={isDefaultCategory(category.name) ? "Remove from selection" : "Remove category"}
                     >
                       ×
-                    </button>
+                    </div>
                   )}
                 </span>
                 {category.trending && category.growthRate > 0 && (
@@ -308,7 +227,7 @@ export default function ExplorePage() {
                     setNewCategory(e.target.value);
                     setError(null);
                   }}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   className="px-4 py-2 rounded-full text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                   autoFocus
                 />

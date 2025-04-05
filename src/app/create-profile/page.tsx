@@ -294,7 +294,7 @@ export default function CreateProfilePage() {
                         setNewCategory(e.target.value);
                         setCategoryError(null);
                       }}
-                      onKeyPress={handleKeyPress}
+                      onKeyDown={handleKeyPress}
                       className="px-4 py-2 rounded-lg text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent flex-grow"
                       autoFocus
                     />

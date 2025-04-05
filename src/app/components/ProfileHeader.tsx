@@ -31,6 +31,8 @@ export default function ProfileHeader({ name, username, role, avatarUrl, stats, 
             src={avatarUrl}
             alt={name}
             fill
+            priority
+            sizes="(max-width: 768px) 192px, 192px"
             className="object-cover"
           />
         </div>
