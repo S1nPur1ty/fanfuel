@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from 'react';
+import ImageGeneratorSlider from './ImageGeneratorSlider';
 
 interface ProfileHeaderProps {
   name: string;
@@ -17,10 +18,20 @@ interface ProfileHeaderProps {
 }
 
 export default function ProfileHeader({ name, username, role, avatarUrl, stats, bio }: ProfileHeaderProps) {
+  const [isSliderOpen, setIsSliderOpen] = useState(false);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
     return num.toString();
+  };
+
+  const handleImageGenerated = (imageUrl: string) => {
+    setGeneratedImageUrl(imageUrl);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
   };
 
   return (
@@ -59,17 +70,46 @@ export default function ProfileHeader({ name, username, role, avatarUrl, stats, 
           </div>
 
           <div className="mt-6 flex justify-center md:justify-start">
-            <Link
-              href={`/create?artist=${username}`}
+            <button
+              onClick={() => setIsSliderOpen(true)}
               className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition"
             >
               Contribute
-            </Link>
+            </button>
           </div>
 
           <p className="mt-6 text-gray-700 text-center md:text-left">{bio}</p>
         </div>
       </div>
+      
+      {generatedImageUrl && (
+        <div className="mt-10">
+          <h2 className="text-2xl font-bold mb-4 text-center">Your Generated Image</h2>
+          <div className="max-w-md mx-auto relative aspect-square rounded-lg overflow-hidden shadow-lg">
+            <Image
+              src={generatedImageUrl}
+              alt="Generated fan art"
+              fill
+              sizes="(max-width: 768px) 100vw, 384px"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      )}
+      
+      {showToast && (
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
+          Image URL copied to clipboard!
+        </div>
+      )}
+      
+      <ImageGeneratorSlider
+        artistName={name}
+        artistUsername={username}
+        isOpen={isSliderOpen}
+        onClose={() => setIsSliderOpen(false)}
+        onImageGenerated={handleImageGenerated}
+      />
     </div>
   );
 } 
