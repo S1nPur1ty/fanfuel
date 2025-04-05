@@ -16,7 +16,8 @@ const requiredEnvVars = [
   'NEXT_PUBLIC_GOOGLE_CLIENT_ID',
   'NEXT_PUBLIC_GOOGLE_CLIENT_SECRET',
   'NEXTAUTH_SECRET',
-  'NEXTAUTH_URL'
+  'NEXTAUTH_URL',
+  'METAL_API_KEY'
 ];
 
 // Try to load .env.local file
@@ -71,6 +72,7 @@ if (missingVars.length === 0) {
   console.log('NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=your_google_client_secret');
   console.log('NEXTAUTH_SECRET=your_nextauth_secret');
   console.log('NEXTAUTH_URL=http://localhost:3000');
+  console.log('METAL_API_KEY=your_metal_api_key');
 }
 
 // Print current values (with sensitive parts masked)

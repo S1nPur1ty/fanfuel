@@ -10,6 +10,7 @@ FanFuel is a web application that allows users to generate and share AI-generate
 - npm or yarn
 - A Supabase account
 - A Google Cloud account (for Google OAuth)
+- A Metal API key (for web3 wallet generation)
 
 ### Environment Variables
 
@@ -28,6 +29,9 @@ NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=your_google_client_secret
 # NextAuth
 NEXTAUTH_SECRET=your_nextauth_secret
 NEXTAUTH_URL=http://localhost:3000
+
+# Metal API
+METAL_API_KEY=your_metal_api_key
 ```
 
 You can run the environment check script to verify your setup:
@@ -69,6 +73,7 @@ yarn dev
 - AI image generation
 - Image sharing and social features
 - User profiles
+- Web3 wallet generation for new users
 
 ## Project Structure
 

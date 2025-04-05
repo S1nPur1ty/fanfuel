@@ -4,6 +4,7 @@ import { Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
+import { generateWeb3Wallet } from '@/lib/metal';
 
 // Check if required environment variables are set
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -91,16 +92,20 @@ export const authOptions: NextAuthOptions = {
       // If this is the first sign in, save user data to Supabase
       if (account && user) {
         try {
+          console.log('[NextAuth] Processing sign-in for user:', user.email);
+          
           // Check if Supabase is properly initialized
           if (!supabaseUrl || !supabaseServiceKey) {
-            console.error('Cannot save user to Supabase: Missing environment variables');
+            console.error('[NextAuth] Cannot save user to Supabase: Missing environment variables');
             return token;
           }
           
           // Convert Google ID to UUID format
           const uuid = stringToUuid(user.id);
+          console.log('[NextAuth] Generated UUID for user:', uuid);
           
           // Check if user already exists
+          console.log('[NextAuth] Checking if user exists in Supabase...');
           const { data: existingUser } = await supabase
             .from('users')
             .select('id')
@@ -108,6 +113,7 @@ export const authOptions: NextAuthOptions = {
             .single();
           
           if (!existingUser) {
+            console.log('[NextAuth] User does not exist, creating new user in Supabase...');
             // Create new user in Supabase
             const { error } = await supabase
               .from('users')
@@ -124,11 +130,24 @@ export const authOptions: NextAuthOptions = {
               ]);
             
             if (error) {
-              console.error('Error saving user to Supabase:', error);
+              console.error('[NextAuth] Error saving user to Supabase:', error);
             } else {
-              console.log('User saved to Supabase successfully');
+              console.log('[NextAuth] User saved to Supabase successfully');
+              
+              // Generate web3 wallet for the new user
+              console.log('[NextAuth] Initiating web3 wallet generation for new user...');
+              const walletData = await generateWeb3Wallet(uuid);
+              if (walletData) {
+                // Update user with wallet information if needed
+                // This depends on what data the Metal API returns and what you want to store
+                console.log('[NextAuth] Web3 wallet generation completed successfully');
+                console.log('[NextAuth] Wallet data:', JSON.stringify(walletData, null, 2));
+              } else {
+                console.error('[NextAuth] Failed to generate web3 wallet for user');
+              }
             }
           } else {
+            console.log('[NextAuth] User already exists, updating last login...');
             // Update user's last login
             const { error } = await supabase
               .from('users')
@@ -139,11 +158,13 @@ export const authOptions: NextAuthOptions = {
               .eq('id', uuid);
             
             if (error) {
-              console.error('Error updating user in Supabase:', error);
+              console.error('[NextAuth] Error updating user in Supabase:', error);
+            } else {
+              console.log('[NextAuth] User last login updated successfully');
             }
           }
         } catch (error) {
-          console.error('Error in Supabase user operation:', error);
+          console.error('[NextAuth] Error in Supabase user operation:', error);
         }
       }
       

@@ -15,21 +15,7 @@ export default function ImageModal({ image, isOpen, onClose }: ImageModalProps) 
   const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
-    if (isOpen) {
-      setIsVisible(true);
-      // Prevent scrolling when modal is open
-      document.body.style.overflow = 'hidden';
-    } else {
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-        // Re-enable scrolling when modal is closed
-        document.body.style.overflow = 'auto';
-      }, 300);
-      return () => {
-        clearTimeout(timer);
-        document.body.style.overflow = 'auto';
-      };
-    }
+    setIsVisible(isOpen);
   }, [isOpen]);
   
   if (!isOpen && !isVisible) return null;
